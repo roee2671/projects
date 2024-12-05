@@ -49,7 +49,16 @@ public class Ex1 {
     public static boolean isNumber(String a) {
         boolean ans = true;
         // add your code here
-
+        if (a == null || a.isEmpty()){
+            ans = false;
+        }
+        char[] char_a = a.toCharArray();
+        for (int i = 0; i < a.length(); i++){
+            if(char_a[i] < '0' || char_a[i] > '9'){
+                ans = false;
+                break;
+            }
+        }
         ////////////////////
         return ans;
     }

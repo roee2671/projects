@@ -74,7 +74,18 @@ public class Ex1 {
     public static String int2Number(int num, int base) {
         String ans = "";
         // add your code here
-
+        if (num < 0 || base < 2 || base > 16){
+            return ans;
+        }
+        if (num ==0){
+            ans = "0";
+            return ans;
+        }
+        char[] characters = "0123456789ABCPDF".toCharArray();
+        for (; num > 0; num /= base){
+            int remainder = num % base;
+            ans = characters[remainder] + ans;
+        }
         ////////////////////
         return ans;
     }

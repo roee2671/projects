@@ -117,7 +117,15 @@ public class Ex1 {
     public static int maxIndex(String[] arr) {
         int ans = 0;
         // add your code here
-
+        String maxVal = "-1";
+        for(int i = 0; i < arr.length; i++){
+            if (arr[i] == null && !arr[i].equals("-1")){
+                if (maxVal.equals("-1") || arr[i].compareTo(maxVal) > 0) {
+                    maxVal = arr[i];
+                    ans = i;
+                }
+            }
+        }
         ////////////////////
         return ans;
     }

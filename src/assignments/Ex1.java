@@ -24,7 +24,20 @@ public class Ex1 {
         if (num == null || num.isEmpty()){
             return ans;
         }
-
+        char[] c = num.toCharArray();
+        for (char value : c) {
+            if ((value < '0' || (value > '9') && (value < 'A') || value > 'F')) {
+                return ans;
+            }
+        }
+        ans = 0;
+        for(char value : c){
+            if(value >= '0' && value <= '9'){
+                ans = (ans * 16) + (value - '0');
+            } else if (value >= 'A' && value <= 'F') {
+                ans = (ans * 16) + (value - ('A' + 10));
+            }
+        }
         ////////////////////
         return ans;
     }

@@ -99,7 +99,9 @@ public class Ex1 {
     public static boolean equals(String n1, String n2) {
         boolean ans = true;
         // add your code here
-
+        if (!n1.equals(n2)){
+            ans = false;
+        }
         ////////////////////
         return ans;
     }

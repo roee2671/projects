@@ -21,23 +21,7 @@ public class Ex1 {
     public static int number2Int(String num) {
         int ans = -1;
         // add your code here
-        if (num == null || num.isEmpty()){
-            return ans;
-        }
-        char[] c = num.toCharArray();
-        for (char value : c) {
-            if ((value < '0' || (value > '9') && (value < 'A') || value > 'F')) {
-                return ans;
-            }
-        }
-        ans = 0;
-        for(char value : c){
-            if(value >= '0' && value <= '9'){
-                ans = (ans * 16) + (value - '0');
-            } else if (value >= 'A' && value <= 'F') {
-                ans = (ans * 16) + (value - ('A' + 10));
-            }
-        }
+
         ////////////////////
         return ans;
     }
@@ -49,16 +33,7 @@ public class Ex1 {
     public static boolean isNumber(String a) {
         boolean ans = true;
         // add your code here
-        if (a == null || a.isEmpty()){
-            ans = false;
-        }
-        char[] char_a = a.toCharArray();
-        for (int i = 0; i < a.length(); i++){
-            if(char_a[i] < '0' || char_a[i] > '9'){
-                ans = false;
-                break;
-            }
-        }
+
         ////////////////////
         return ans;
     }
@@ -74,18 +49,7 @@ public class Ex1 {
     public static String int2Number(int num, int base) {
         String ans = "";
         // add your code here
-        if (num < 0 || base < 2 || base > 16){
-            return ans;
-        }
-        if (num ==0){
-            ans = "0";
-            return ans;
-        }
-        char[] characters = "0123456789ABCPDF".toCharArray();
-        for (; num > 0; num /= base){
-            int remainder = num % base;
-            ans = characters[remainder] + ans;
-        }
+
         ////////////////////
         return ans;
     }
@@ -99,9 +63,7 @@ public class Ex1 {
     public static boolean equals(String n1, String n2) {
         boolean ans = true;
         // add your code here
-        if (!n1.equals(n2)){
-            ans = false;
-        }
+
         ////////////////////
         return ans;
     }
@@ -117,15 +79,7 @@ public class Ex1 {
     public static int maxIndex(String[] arr) {
         int ans = 0;
         // add your code here
-        String maxVal = "-1";
-        for(int i = 0; i < arr.length; i++){
-            if (arr[i] == null && !arr[i].equals("-1")){
-                if (maxVal.equals("-1") || arr[i].compareTo(maxVal) > 0) {
-                    maxVal = arr[i];
-                    ans = i;
-                }
-            }
-        }
+
         ////////////////////
         return ans;
     }

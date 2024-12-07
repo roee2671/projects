@@ -28,21 +28,20 @@ public class Ex1 {
         int sum = 0;
         int base = 0;
         for (int i = 0; i < c.length; i++) {
-            if((c[i] < '0' || (c[i] > '9' && c[i] < 'A') || c[i] > 'F') && c[i] != 'b'){
-                ans = -1;
+            if (!"0123456789ABCDEFb".contains(String.valueOf(c[i]))){
                 return ans;
             }
             else if (c[i] == 'b'){
-                if (c.length > i+1){
-                    ans = -1;
+                if (i == c.length - 1 || !("0123456789ABCDEF".contains(String.valueOf(c[i + 1])))){
                     return ans;
                 }
-                else if(c[i+1] >= '0' && c[i+1] <= '9') {
+                else if (c[i+1] >= '0' && c[i+1] <= '9') {
                     base += c[i + 1] - '0';
                 }
-                else {
-                    base += c[i + 1] - 'A' + 10;
-                }
+                    else {
+                        base += c[i + 1] - 'A' + 10;
+                    }
+                  break;
             }
             else {
                 if(c[i] >= 'A' && c[i] <= 'G') {
@@ -53,8 +52,11 @@ public class Ex1 {
                 }
             }
         }
+        String g = int2Number(sum,base);
+        ans = Integer.valueOf(g);
         /**
          * עכשיו מה שאני רוצה לעשות זה לקחת את sum ואת base ולחשב אותם על ידי int2Number
+         * ואז להעביר אותם ל-string ולהכניס אותם ל-ans
          */
         ////////////////////
         return ans;
@@ -83,7 +85,25 @@ public class Ex1 {
     public static String int2Number(int num, int base) {
         String ans = "";
         // add your code here
-
+        if (base == num){
+            return ans;
+        }
+        String numStr = String.valueOf(num);
+        int[] result = new int[numStr.length()];
+        for (int i = 0; i < numStr.length(); i++) {
+            result[i] = num % 10;
+            num /= 10;
+        }
+        int calculate = 0;
+        for (int i = 0; i < numStr.length(); i++){
+            if(result[i] > base){
+                return ans;
+            }
+            else {
+                calculate = calculate + result[i] * ((int) Math.pow(base, i));
+            }
+        }
+        ans = String.valueOf(calculate);
         ////////////////////
         return ans;
     }

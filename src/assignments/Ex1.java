@@ -21,7 +21,41 @@ public class Ex1 {
     public static int number2Int(String num) {
         int ans = -1;
         // add your code here
-
+        if (num == null || num.isEmpty()) {
+            return ans;
+        }
+        char[] c = num.toCharArray();
+        int sum = 0;
+        int base = 0;
+        for (int i = 0; i < c.length; i++) {
+            if((c[i] < '0' || (c[i] > '9' && c[i] < 'A') || c[i] > 'F') && c[i] != 'b'){
+                ans = -1;
+                return ans;
+            }
+            else if (c[i] == 'b'){
+                if (c.length > i+1){
+                    ans = -1;
+                    return ans;
+                }
+                else if(c[i+1] >= '0' && c[i+1] <= '9') {
+                    base += c[i + 1] - '0';
+                }
+                else {
+                    base += c[i + 1] - 'A' + 10;
+                }
+            }
+            else {
+                if(c[i] >= 'A' && c[i] <= 'G') {
+                    sum = sum * 10 + (c[i] - 'A' + 10);
+                }
+                if(c[i] >= '0' && c[i] <= '9'){
+                    sum = sum * 10 + (c[i] - '0');
+                }
+            }
+        }
+        /**
+         * עכשיו מה שאני רוצה לעשות זה לקחת את sum ואת base ולחשב אותם על ידי int2Number
+         */
         ////////////////////
         return ans;
     }

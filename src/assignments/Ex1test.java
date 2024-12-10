@@ -1,13 +1,8 @@
 package assignments;
-import assignments.Ex1;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * This JUnit class represents a very partial test class for Ex1.
- * Make sure you complete all the needed JUnits
- */
 public class Ex1test {
     @Test
     void computeNumberTest() {
@@ -37,7 +32,6 @@ public class Ex1test {
     }
     @Test
     void int2NumberTest() {
-        // implement this test
         assertEquals("10011b2", Ex1.int2Number(19, 2));
         assertEquals("15bA", Ex1.int2Number(15, 10));
         assertEquals("2b3", Ex1.int2Number(2, 3));
@@ -46,7 +40,6 @@ public class Ex1test {
     }
     @Test
     void maxIndexTest() {
-        // implement this test
         String[] arr1 = {"101b2", "110b2", "111b2"};
         assertEquals(2, Ex1.maxIndex(arr1));
         String[] arr2 = {"10bA", "20bA", "15bA", "15bA"};
@@ -62,5 +55,4 @@ public class Ex1test {
 
     }
 
-    // Add additional test functions - test as much as you can.
 }

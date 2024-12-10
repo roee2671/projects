@@ -88,8 +88,8 @@ public class Ex1 {
             int hasDigit = 0;
             int hasLetter = 0;
             if (!a.contains("b")) {
-                for (int i = 0; i < c.length; i++) {
-                    if (c[i] < '0' || c[i] > '9') {
+                for (char value : c) {
+                    if (value < '0' || value > '9') {
                         ans = false;
                         break;
                     }

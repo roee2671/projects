@@ -1,7 +1,5 @@
 package assignments;
 
-import java.util.Objects;
-
 public class Ex1 {
 
     public static int number2Int(String num) {

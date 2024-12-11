@@ -14,8 +14,12 @@ public class Ex1Main {
 
             if (!num1.equals(quit)) {
                 boolean isNum1Valid = Ex1.isNumber(num1);
-                int value1 = isNum1Valid ? Ex1.number2Int(num1) : -1;
-
+                int value1;
+                if (isNum1Valid) {
+                    value1 = Ex1.number2Int(num1);
+                } else {
+                    value1 = -1;
+                }
                 System.out.println("num1= " + num1 + " is number: " + isNum1Valid + " , value: " + value1);
 
                 if (isNum1Valid) {
@@ -24,7 +28,12 @@ public class Ex1Main {
 
                     if (!num2.equals(quit)) {
                         boolean isNum2Valid = Ex1.isNumber(num2);
-                        int value2 = isNum2Valid ? Ex1.number2Int(num2) : -1;
+                        int value2;
+                        if (isNum2Valid) {
+                            value2 = Ex1.number2Int(num2);
+                        } else {
+                            value2 = -1;
+                        }
 
                         System.out.println("num2= " + num2 + " is number: " + isNum2Valid + " , value: " + value2);
 
@@ -33,8 +42,8 @@ public class Ex1Main {
                             int base = sc.nextInt();
 
                             if (base == 10){
-                                int decimalSum = Ex1.toDecimal(value1, 10) + Ex1.toDecimal(value2, 10);
-                                int decimalProduct = Ex1.toDecimal(value1, 10) * Ex1.toDecimal(value2, 10);
+                                int decimalSum = Ex1.number2Int(num1) + Ex1.number2Int(num2);
+                                int decimalProduct = Ex1.number2Int(num1) * Ex1.number2Int(num2);
 
                                 System.out.println(num1 + " + " + num2 + " = " + decimalSum);
                                 System.out.println(num1 + " * " + num2 + " = " + decimalProduct);
@@ -45,16 +54,16 @@ public class Ex1Main {
                                 System.out.println("Max number over [" + num1 + "," + num2 + "," + decimalSum + "," + decimalProduct + "] is: " + numbers[maxValue]);
                             }
                             else if (base >= 2 && base <= 16) {
-                                String sum = Ex1.int2Number(value1 + value2, base);
-                                String product = Ex1.int2Number(value1 * value2, base);
+                                String sum = Ex1.int2Number((value1 + value2), base);
+                                String product = Ex1.int2Number((value1 * value2), base);
 
                                 System.out.println(num1 + " + " + num2 + " = " + sum);
                                 System.out.println(num1 + " * " + num2 + " = " + product);
 
-                                String[] numbers = {num1, num2, String.valueOf(sum), String.valueOf(product)};
+                                String[] numbers = {num1, num2, sum, product};
                                 int maxValue = Ex1.maxIndex(numbers);
 
-                                System.out.println("Max number over [" + num1 + "," + num2 + "," + sum + "," + product + "] is: " + Ex1.int2Number(maxValue, base));
+                                System.out.println("Max number over [" + num1 + "," + num2 + "," + sum + "," + product + "] is: " + numbers[maxValue]);
                             } else {
                                 System.out.println("ERR: Invalid base input! (" + base + ")");
                             }

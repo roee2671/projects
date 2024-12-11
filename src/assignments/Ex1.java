@@ -1,48 +1,44 @@
 package assignments;
 
+import java.util.Objects;
+
 public class Ex1 {
 
     public static int number2Int(String num) {
         int ans = -1;
         if (!isNumber(num)) {
             return ans;
-        }
-        char[] c = num.toCharArray();
-        int sum = 0;
-        int base = 0;
-        for (int i = 0; i < c.length; i++) {
-            if (c[i] == 'b') {
-                if (c[i + 1] >= '2' && c[i + 1] <= '9') {
-                    base += c[i + 1] - '0';
-                } else {
-                    base += c[i + 1] - 'A' + 10;
-                }
-                break;
+        } else if (!num.contains("b")) {
+            ans = Integer.parseInt(num);
+        } else {
+            String sum = num.substring(0, num.length() - 2);
+
+            char[] c = num.toCharArray();
+            int base = 0;
+            int last = c.length - 1;
+            if (c[last] >= '2' && c[last] <= '9') {
+                base += c[last] - '0';
             } else {
-                if (c[i] >= 'A' && c[i] <= 'G') {
-                    sum = sum * 10 + (c[i] - 'A' + 10);
-                }
-                if (c[i] >= '0' && c[i] <= '9') {
-                    sum = sum * 10 + (c[i] - '0');
-                }
+                base += c[last] - 'A' + 10;
             }
+            ans = toDecimal(sum, base);
         }
-        if (base == 0) {
-            base = 10;
-        }
-        ans = toDecimal(sum, base);
         return ans;
     }
 
-    public static int toDecimal(int num, int base) {
+    public static int toDecimal(String num, int base) {
         int ans = 0;
-        if (num == 0) {
+        if (num == "0") {
             return ans;
         }
-        for (int power = 0; num > 0; power++) {
-            int digit = num % 10;
-            ans += digit * (int) Math.pow(base, power);
-            num = num / 10;
+        char[] c = num.toCharArray();
+        int last = c.length - 1;
+        for (int i = 0; i < c.length; i++) {
+            if (c[last - i] >= 'A' && c[last - i] <= 'G') {
+                ans = ans + ((c[last - i] - 'A' + 10) * (int) Math.pow(base, i));
+            } else {
+                ans = ans + ((c[last - i] - '0') * (int) Math.pow(base, i));
+            }
         }
         return ans;
     }
@@ -54,8 +50,6 @@ public class Ex1 {
         } else {
             char[] c = a.toCharArray();
             int last = c.length - 1;
-            int hasDigit = 0;
-            int hasLetter = 0;
             if (!a.contains("b")) {
                 for (char value : c) {
                     if (value < '0' || value > '9') {
@@ -68,17 +62,10 @@ public class Ex1 {
                     ans = false;
                 } else {
                     for (int i = 0; i < last - 1; i++) {
-                        if ("0123456789".contains(String.valueOf(c[i]))) {
-                            hasDigit = hasDigit + 1;
-                        } else if ("ABCDEFG".contains(String.valueOf(c[i]))) {
-                            hasLetter = hasLetter + 1;
-                        } else {
+                        if (!("0123456789ABCDEF".contains(String.valueOf(c[i]))) || c[i] >= c[last]) {
                             ans = false;
                             break;
                         }
-                    }
-                    if (hasDigit != 0 && hasLetter != 0) {
-                        ans = false;
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package assignments;
+package assignments.Ex1;
 
 public class Ex1 {
 

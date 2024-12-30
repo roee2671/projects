@@ -1,4 +1,4 @@
-package assignments;
+package assignments.Ex1;
 import java.util.Scanner;
 
 public class Ex1Main {

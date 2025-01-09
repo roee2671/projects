@@ -31,7 +31,7 @@ public interface Cell {
      */
     public void setType(int t);
     /**
-     * Computes the natural order of this entry (cell) in case of a number or a String =0, else 1+ the max of all dependent cells.
+     * Computes the natural order of this entry (cell) in case of a number or a String =0, else 1+ thez max of all dependent cells.
      * @return an integer representing the "number of rounds" needed to compute this cell (using an iterative approach)..
      */
     public int getOrder();

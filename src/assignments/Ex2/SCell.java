@@ -4,19 +4,31 @@ package assignments.Ex2;
 public class SCell implements Cell {
     private String line;
     private int type;
-    // Add your code here
+    private int order;
+    private Ex2Sheet sheet;
+    private int posX;
+    private int posY;
+
+    public SCell(String s,int x ,int y, Ex2Sheet sheet) {
+        this.posX = x;
+        this.posY = y;
+        this.sheet = sheet;
+        setData(s);
+    }
 
     public SCell(String s) {
-        // Add your code here
-        setData(s);
+        return;
     }
 
     @Override
     public int getOrder() {
-        // Add your code here
+        if(this.type == Ex2Utils.TEXT || this.type == Ex2Utils.NUMBER){
+            order = 0;
+        }
+        else {
 
-        return 0;
-        // ///////////////////
+        }
+        return order;
     }
 
     //@Override
@@ -27,9 +39,12 @@ public class SCell implements Cell {
 
     @Override
     public void setData(String s) {
-        // Add your code here
+        int t = -2;
+        if (Ex2.isText(s)){ t=Ex2Utils.TEXT; }
+        if (Ex2.isNumber(s)){ t=Ex2Utils.NUMBER; }
+        if (Ex2.isForm(s)){ t=Ex2Utils.FORM; }
+        setType(t);
         line = s;
-        /////////////////////
     }
     @Override
     public String getData() {
@@ -49,6 +64,7 @@ public class SCell implements Cell {
     @Override
     public void setOrder(int t) {
         // Add your code here
+
 
     }
 }

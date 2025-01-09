@@ -23,12 +23,8 @@ public class Ex2Sheet implements Sheet {
     @Override
     public String value(int x, int y) {
         String ans = Ex2Utils.EMPTY_CELL;
-        // Add your code here
-
         Cell c = get(x,y);
         if(c!=null) {ans = c.toString();}
-
-        /////////////////////
         return ans;
     }
 
@@ -82,7 +78,10 @@ public class Ex2Sheet implements Sheet {
     @Override
     public int[][] depth() {
         int[][] ans = new int[width()][height()];
+        for (int x = 0; x < width(); ){
+        }
         // Add your code here
+
 
         // ///////////////////
         return ans;

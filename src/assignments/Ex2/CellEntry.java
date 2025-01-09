@@ -3,14 +3,26 @@ package assignments.Ex2;
 
 public class CellEntry  implements Index2D {
 
-    @Override
-    public boolean isValid() {
-        return false;
+    private int x;
+    private int y;
+
+    public CellEntry(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
     @Override
-    public int getX() {return Ex2Utils.ERR;}
+    public boolean isValid() {
+        return x >= 0 && y >= 0 && y <=99 && x <= 25;
+    }
 
     @Override
-    public int getY() {return Ex2Utils.ERR;}
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
 }

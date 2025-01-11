@@ -1,18 +1,41 @@
 package assignments.Ex2;
-// Add your documentation below:
+
+import assignments.Ex2.Compute.ComExprNum;
+import assignments.Ex2.Compute.ComText;
 
 public class SCell implements Cell {
+    private Ex2Sheet sheet;
     private String line;
     private int type;
+    private int order;
 
+    public boolean isNumber(String text) {
+        return Ex2Sheet.isNumber(text);
+    }
 
-    public SCell(String s) {
+    public boolean isText(String text) {
+        return sheet.compute(text) instanceof ComText;
+    }
+
+    public boolean isForm(String text) {
+        return sheet.compute(text) instanceof ComExprNum;
+    }
+
+    public double computeForm(String form) {
+        if (sheet.compute(form) instanceof ComExprNum comExprNum) {
+            return comExprNum.getNumValue();
+        }
+        return -1;
+    }
+
+    public SCell(String s,Ex2Sheet sheet,CellEntry cellEntry) {
+        this.sheet = sheet;
         setData(s);
     }
 
     @Override
     public int getOrder() {
-        return 0;
+        return order;
     }
 
     //@Override
@@ -42,8 +65,6 @@ public class SCell implements Cell {
 
     @Override
     public void setOrder(int t) {
-        // Add your code here
-
-
+        order = t;
     }
 }

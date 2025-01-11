@@ -12,6 +12,11 @@ public class CellEntry implements Index2D {
     }
 
     public CellEntry(String s){
+        if (s.isEmpty()){
+            this.x = -1;
+            this.y = -1;
+            return;
+        }
         s = s.toUpperCase();
         if(Character.isAlphabetic(s.charAt(0))){
             this.x = s.charAt(0) - 'A';

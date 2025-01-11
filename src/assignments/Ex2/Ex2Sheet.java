@@ -2,20 +2,22 @@ package assignments.Ex2;
 
 import assignments.Ex2.Compute.*;
 
-import javax.swing.plaf.PanelUI;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Ex2Sheet implements Sheet {
-    public Cell[][] table;
-    // Add your code here
+    private Cell[][] table;
 
     public Ex2Sheet(int x, int y) {
         table = new SCell[x][y];
         for (int i = 0; i < x; i = i + 1) {
             for (int j = 0; j < y; j = j + 1) {
-                table[i][j] = new SCell(Ex2Utils.EMPTY_CELL);
+                table[i][j] = new SCell(Ex2Utils.EMPTY_CELL, this, new CellEntry(i, j));
             }
         }
         eval();
@@ -59,6 +61,9 @@ public class Ex2Sheet implements Sheet {
     }
 
     public Computable compute(String s) {
+        if(s == null){
+            return new ComFormErr();
+        }
         if (s.startsWith("=")) {
             String sFixed = s.replaceAll(" ", "");
             sFixed = sFixed.substring(1);
@@ -71,8 +76,11 @@ public class Ex2Sheet implements Sheet {
     }
 
     public static String removeParentheses(String s) {
+        if (s == null){
+            return "";
+        }
         breakPoint:
-        while (s.charAt(0) == '(' && s.charAt(s.length() - 1) == ')') {
+        while (s.startsWith("(") && s.endsWith(")")) {
             int count = 0;
             char[] c = s.toCharArray();
             for (int i = 1; i < s.length() - 1; i++) {
@@ -95,7 +103,7 @@ public class Ex2Sheet implements Sheet {
     }
 
     Computable calculate(String s) {
-        removeParentheses(s);
+        s = removeParentheses(s);
         int mainInd = indOfMainOp(s);
         if (mainInd == -1) {
             if (isNumber(s)) {
@@ -114,7 +122,7 @@ public class Ex2Sheet implements Sheet {
                     return new ComFormErr();
                 }
                 if (computed instanceof ComNum comNum) {
-                    return new ComExprNum(comNum.value);
+                    return new ComExprNum(comNum.getNumValue());
                 }
                 return computed;
             }
@@ -123,7 +131,11 @@ public class Ex2Sheet implements Sheet {
         String part1 = s.substring(0, mainInd);
         String part2 = s.substring(mainInd + 1);
         if (part1.isEmpty()) {
-            part1 = "0";
+            if (s.charAt(mainInd) == '+' || s.charAt(mainInd) == '-') {
+                part1 = "0";
+            } else {
+                return new ComFormErr();
+            }
         }
         if (part2.isEmpty()) {
             return new ComFormErr();
@@ -133,8 +145,8 @@ public class Ex2Sheet implements Sheet {
         if (com1 instanceof ComFormErr || com2 instanceof ComFormErr) {
             return new ComFormErr();
         }
-        double num1 = ((ComExprNum) com1).numValue;
-        double num2 = ((ComExprNum) com2).numValue;
+        double num1 = ((ComExprNum) com1).getNumValue();
+        double num2 = ((ComExprNum) com2).getNumValue();
 
         switch (s.charAt(mainInd)) {
             case '+':
@@ -154,7 +166,7 @@ public class Ex2Sheet implements Sheet {
         if (!line.startsWith("=")) {
             return true;
         }
-        Set<CellEntry> inners = getInners(line.substring(1));
+        Set<CellEntry> inners = getCellEntries(line.substring(1));
         for (CellEntry inner : inners) {
             if (depths[inner.getX()][inner.getY()] == -1)
                 return false;
@@ -162,7 +174,7 @@ public class Ex2Sheet implements Sheet {
         return true;
     }
 
-    public static Set<CellEntry> getInners(String line) {
+    public static Set<CellEntry> getCellEntries(String line) {
         line = removeParentheses(line);
 
         CellEntry cellEntry = new CellEntry(line);
@@ -177,10 +189,10 @@ public class Ex2Sheet implements Sheet {
             return new HashSet<>();
         }
 
-        Set<CellEntry> set0 = getInners(line.substring(0, opI));
-        Set<CellEntry> set1 = getInners(line.substring(opI + 1));
+        Set<CellEntry> set0 = getCellEntries(line.substring(0, opI));
+        Set<CellEntry> set1 = getCellEntries(line.substring(opI + 1));
 
-        for(CellEntry ce : set0){
+        for (CellEntry ce : set0) {
             set1.add(ce);
         }
 
@@ -201,10 +213,13 @@ public class Ex2Sheet implements Sheet {
         boolean flagC = true;
         while (flagC) {
             flagC = false;
-            int[][] ansCopy = ans.clone();
+            int[][] ansCopy = new int[ans.length][];
+            for (int i = 0; i < ans.length; i++) {
+                ansCopy[i] = ans[i].clone();
+            }
             for (int x = 0; x < width(); x++) {
                 for (int y = 0; y < height(); y++) {
-                    if (canBeComputedNow(get(x,y).getData(),ans) && ans[x][y] == -1) {
+                    if (canBeComputedNow(get(x, y).getData(), ans) && ans[x][y] == -1) {
                         ansCopy[x][y] = depth;
                         flagC = true;
                     }
@@ -221,7 +236,7 @@ public class Ex2Sheet implements Sheet {
         String ans = Ex2Utils.EMPTY_CELL;
         Cell c = get(x, y);
         if (c != null) {
-            ans = c.toString();
+            ans = eval(x, y);
         }
         return ans;
     }
@@ -234,9 +249,8 @@ public class Ex2Sheet implements Sheet {
     @Override
     public Cell get(String cords) {
         Cell ans = null;
-        // Add your code here
-
-        /////////////////////
+        CellEntry cellEntry = new CellEntry(cords);
+        ans = get(cellEntry.getX(), cellEntry.getY());
         return ans;
     }
 
@@ -252,19 +266,17 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public void set(int x, int y, String s) {
-        Cell c = new SCell(s);
+        Cell c = new SCell(s, this, new CellEntry(x, y));
         table[x][y] = c;
-        // Add your code here
-
-        /////////////////////
     }
 
     @Override
     public void eval() {
-        int[][] dd = depth();
-        // Add your code here
-
-        // ///////////////////
+        for (int x = 0; x < width(); x++) {
+            for (int y = 0; y < height(); y++) {
+                eval(x, y);
+            }
+        }
     }
 
     @Override
@@ -275,31 +287,64 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public void load(String fileName) throws IOException {
-        // Add your code here
+        List<String> lines = Files.readAllLines(Paths.get(fileName));
 
-        /////////////////////
+        for (int x = 0; x < width(); x++) {
+            for (int y = 0; y < height(); y++) {
+                table[x][y].setData("");
+            }
+        }
+
+        for (int i = 1; i < lines.size(); i++) {
+            String[] split = lines.get(i).split(",");
+            int x = Integer.parseInt(split[0]);
+            int y = Integer.parseInt(split[1]);
+
+            table[x][y].setData(split[2]);
+        }
     }
 
     @Override
     public void save(String fileName) throws IOException {
-        // Add your code here
+        String content = "First line: just a header line - should not be parsed.\n";
 
-        /////////////////////
+        for (int y = 0; y < height(); y++) {
+            for (int x = 0; x < width(); x++) {
+                SCell cell = (SCell) table[x][y];
+                String line = cell.getData();
+                if (line != "") {
+                    content += x + "," + y + "," + line + "\n";
+                }
+            }
+        }
+        FileWriter writer = new FileWriter(fileName);
+        writer.write(content);
+        writer.close();
     }
 
     @Override
     public String eval(int x, int y) {
-        String ans = null;
         int[][] d = depth();
+        Cell cell = get(x, y);
         if (d[x][y] == -1) {
+            cell.setType(Ex2Utils.ERR_CYCLE_FORM);
             return Ex2Utils.ERR_CYCLE;
         }
-        if (get(x, y) != null) {
-            ans = get(x, y).toString();
+        switch (compute(cell.toString())) {
+            case ComExprNum cXNum:
+                cell.setType(Ex2Utils.FORM);
+                return String.valueOf(cXNum.getNumValue());
+            case ComNum cNum:
+                cell.setType(Ex2Utils.NUMBER);
+                return String.valueOf(cNum.getNumValue());
+            case ComText cText:
+                cell.setType(Ex2Utils.TEXT);
+                return cText.text;
+            case ComFormErr cFErr:
+                cell.setType(Ex2Utils.ERR_FORM_FORMAT);
+                return Ex2Utils.ERR_FORM;
+            default:
+                return "BlaBla";
         }
-        // Add your code here
-
-        /////////////////////
-        return ans;
     }
 }

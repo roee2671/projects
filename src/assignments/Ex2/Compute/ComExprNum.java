@@ -1,7 +1,11 @@
 package assignments.Ex2.Compute;
 
 public class ComExprNum  implements Computable{
-    public double numValue;
+    private double numValue;
+
+    public double getNumValue(){
+        return numValue;
+    }
 
     public ComExprNum(double v) { this.numValue = v; }
 }

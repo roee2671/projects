@@ -7,13 +7,11 @@ public class SCell implements Cell {
 
 
     public SCell(String s) {
-
         setData(s);
     }
 
     @Override
     public int getOrder() {
-
         return 0;
     }
 
@@ -25,7 +23,6 @@ public class SCell implements Cell {
 
     @Override
     public void setData(String s) {
-
         line = s;
     }
     @Override

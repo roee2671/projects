@@ -162,12 +162,15 @@ public class Ex2Sheet implements Sheet {
     }
 
 
-    static boolean canBeComputedNow(String line, int[][] depths) {
+    public boolean canBeComputedNow(String line, int[][] depths) {
         if (!line.startsWith("=")) {
             return true;
         }
         Set<CellEntry> inners = getCellEntries(line.substring(1));
         for (CellEntry inner : inners) {
+            if(!isIn(inner.getX(),inner.getY())){
+                continue;
+            }
             if (depths[inner.getX()][inner.getY()] == -1)
                 return false;
         }

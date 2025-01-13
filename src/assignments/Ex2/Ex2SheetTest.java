@@ -9,10 +9,25 @@ class Ex2SheetTest {
 
     @Test
     void isNumber() {
+        String[] good = {"135", "100111", "12345", "012", "1.23", "-135", "+100", "0", "123.45", "-0.5"};
+        for (int i = 0; i < good.length; i++) {
+            boolean ok = Ex2Sheet.isNumber(good[i]);
+            assertTrue(ok);
+        }
+
+        String[] notGood = {"b2", "abc", "1.2.3", "12a", "1-2", "1+2", "", null};
+        for (int i = 0; i < notGood.length; i++) {
+            boolean notOk = Ex2Sheet.isNumber(notGood[i]);
+            assertFalse(notOk);
+        }
     }
 
     @Test
     void indOfMainOp() {
+        assertEquals(1, Ex2Sheet.indOfMainOp("1+2*3"));
+        assertEquals(5, Ex2Sheet.indOfMainOp("(1+2)*3"));
+        assertEquals(3, Ex2Sheet.indOfMainOp("1+2+3"));
+        assertEquals(-1, Ex2Sheet.indOfMainOp("(1+2)"));
     }
 
     @Test
@@ -39,11 +54,35 @@ class Ex2SheetTest {
     }
 
     @Test
+    void canBeComputedNow() {
+    }
+
+    @Test
     void calculate() {
+        Ex2Sheet sheet = new Ex2Sheet();
+        sheet.set(0,0,"5");
+        assertEquals(4.0 ,((ComExprNum)sheet.calculate("((((2)+(3-1))))")).getNumValue());
+        assertEquals(33.0 ,((ComExprNum)sheet.calculate("((((3+2)*4)-((8/2)+1))*2)+3")).getNumValue());
+        assertEquals(46/3.0 ,((ComExprNum)sheet.calculate("(((A0+5)-3)*2)+(4/(2+1))")).getNumValue());
+        assertEquals(10.0 ,((ComExprNum)sheet.calculate("(((2+3)*2)+(8/2))-(3+1)")).getNumValue());
+        assertEquals(20.0 ,((ComExprNum)sheet.calculate("((((6*2)-3)+1)*2)")).getNumValue());
+        assertEquals(4.0 ,((ComExprNum)sheet.calculate("((2+(3-1)))")).getNumValue());
+        assertEquals(10.0 ,((ComExprNum)sheet.calculate("((3+2)*2)")).getNumValue());
+        assertEquals(12.0 ,((ComExprNum)sheet.calculate("(((A0+3)-2)*2)")).getNumValue());
+        assertEquals(14.0 ,((ComExprNum)sheet.calculate("(((2+3)*2)+4)")).getNumValue());
+        assertEquals(10.0 ,((ComExprNum)sheet.calculate("(((6*2)-3)+1)")).getNumValue());
+        assertEquals(10.0 ,((ComExprNum)sheet.calculate("(((4+2)*3)-8)")).getNumValue());
+        assertEquals(6.0 ,((ComExprNum)sheet.calculate("((((3+5)*2)-4)/2)")).getNumValue());
+        assertEquals(12.0 ,((ComExprNum)sheet.calculate("(((5*2)-4)+6)")).getNumValue());
+        assertEquals(6.0 ,((ComExprNum)sheet.calculate("((3+3)*2)-6")).getNumValue());
+        assertEquals(4.0 ,((ComExprNum)sheet.calculate("((9-1)/4)*2")).getNumValue());
+        assertEquals(3.0 ,((ComExprNum)sheet.calculate("(((6+2)*2)-4)/4")).getNumValue());
+        assertEquals(9.0 ,((ComExprNum)sheet.calculate("((8+4)-3)*1")).getNumValue());
     }
 
     @Test
     void getNumValue() {
+
     }
 
     @Test
@@ -72,6 +111,10 @@ class Ex2SheetTest {
 
     @Test
     void isIn() {
+        Ex2Sheet sheet = new Ex2Sheet(2, 2);
+        assertTrue(sheet.isIn(0, 0));
+        assertFalse(sheet.isIn(2, 2));
+        assertFalse(sheet.isIn(2, 99));
     }
 
     @Test
@@ -96,12 +139,12 @@ class Ex2SheetTest {
     @Test
     void isForm() {
         Ex2Sheet sheet = new Ex2Sheet();
-        String[] good = {"=5*5*5*5", "=  1  3  5", "=(1+2)*2", "=((1+2)*2)-1", "=1+2", "=01", "=(-5)", "=+5", "= 5", "=5/2","=(-(-(2)))", "=(((3)))", "=NaN", "=Infinity"};//"=5)+5(+5"
+        String[] good = {"=5*5*5*5","=0/0", "=  1  3  5", "=(1+2)*2", "=((1+2)*2)-1", "=1+2", "=01", "=(-5)", "=+5", "= 5", "=5/2","=(-(-(2)))", "=(((3)))", "=NaN", "=Infinity"};//"=5)+5(+5"
         for (int i = 0; i < good.length; i = i + 1) {
             boolean ok = ((SCell)sheet.get(0,0)).isForm(good[i]);;
             assertTrue(ok);
         }
-        String[] not_good = {"=(5+2)5","=(1*2)-1)","=2+)", "=2+)+4-(2-8", "=2+()", "=(3+1*2)-", "=(-5", "=+-5", "=/5", "     ", "","=5)+5(+5", null};
+        String[] not_good = {"=(5+2)5","=A100+1","=Hello","=" ,"=(1*2)-1)","=2+)", "=2+)+4-(2-8", "=2+()", "=(3+1*2)-", "=(-5", "=+-5", "=/5", "     ", "","=5)+5(+5", null};
         for(int i=0;i<not_good.length;i=i+1) {
             boolean not_ok = ((SCell)sheet.get(0,0)).isForm(not_good[i]);
             assertFalse(not_ok);

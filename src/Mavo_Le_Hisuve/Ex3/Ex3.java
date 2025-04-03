@@ -1,16 +1,24 @@
-package Mavo_Le_Hisuve.assignments.Ex3;
+package Mavo_Le_Hisuve.Ex3;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import Mavo_Le_Hisuve.pdfUtils.Ex3.BinaryTree;
-import Mavo_Le_Hisuve.pdfUtils.Ex3.MyList;
-import Mavo_Le_Hisuve.pdfUtils.Ex3.MyListInterface;
+import Mavo_Le_Hisuve.Ex3.pdfUtils.*;
+import Mavo_Le_Hisuve.assignments.Ex3.pdfUtils.*;
 
 public class Ex3 {
     public static void main(String[] args) {
+        ArrayList<GeoShape> arr1 = new ArrayList<GeoShape>();
+        arr1.add(new Circle2D(new Point2D(0,0),5));
+        arr1.add(new Pizza(new Circle2D(new Point2D(0,0),20),50,90));
+        arr1.get(0).area();
+        Circle2D d = new Circle2D(new Point2D(0,0),5);
+        System.out.println(d.area());
+
+
+
         int n = 3;
         int m = 3;
         int[][] matrix = Q1(n, m);
@@ -292,7 +300,6 @@ public class Ex3 {
         return 1 + Math.max(getHeight(tree.getLeft()), getHeight(tree.getRight()));
     }
 
-    // ans 11:
     public static <T> double q11(BinaryTree  bt){
         int height = getHeight(bt);
         int minHeight = (int) Math.ceil(Math.log(bt.size()+1)/Math.log(2)) - 1 ;
@@ -318,7 +325,7 @@ public class Ex3 {
         return sFixed;
     }
 
-    //ans 13.1:
+    //ans 13:
     public static <T> void mySort(T[] p, Comparator<T> comp){
         int n = p.length;
         boolean swap = true;
@@ -335,187 +342,26 @@ public class Ex3 {
             n--;
         }
     }
-    // ans 13.2:
-    public class SortingTest {
-        private static String randomString(Random random, int length) {
-            String chars = "abcdefghijklmnopqrstuvwxyz";
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < length; i++) {
-                sb.append(chars.charAt(random.nextInt(chars.length())));
-            }
-            return sb.toString();
-        }
-        public static void main(String[] args) {
-            int[] sizes = {100, 1000, 10000};
-            Random random = new Random();
-            for (int size : sizes) {
-                String[] array1 = new String[size];
-                String[] array2 = new String[size];
-                for (int i = 0; i < size; i++) {
-                    String str = randomString(random, 5);
-                    array1[i] = str;
-                    array2[i] = str;
-                }
-                Comparator<String> comp = String::compareTo;
-
-                long start = System.currentTimeMillis();
-                mySort(array1, comp);
-                long mySortTime = System.currentTimeMillis() - start;
-
-                start = System.currentTimeMillis();
-                Arrays.sort(array2, comp);
-                long arraysSortTime = System.currentTimeMillis() - start;
-
-                System.out.println("Size: " + size);
-                System.out.println("mySort: " + mySortTime + " ms");
-                System.out.println("Arrays.sort: " + arraysSortTime + " ms");
-                System.out.println();
-            }
-        }
-    }
-    // ans 14:
-    public class Ellipse {
-        private Point2D p,q;
-        private double n;
-
-        public Ellipse(double xp,double yp,double xq,double yq,double n){
-            this.p = new Point2D(xp,yp);
-            this.q = new Point2D(xq,yq);
-            this.n = n;
-        }
-
-        public Ellipse(Ellipse o){
-            this.p = new Point2D(o.p);
-            this.q = new Point2D(o.q);
-            this.n = o.n;
-        }
-
-        public int whare(Point2D r){
-            double distance = r.distance(p) + r.distance(q);
-            if (distance == n) {
-                return 0;
-            }
-            else if (distance < n) {
-                return -1;
-            }
-            else {
-                return 1;
-            }
-        }
-
-        public boolean equals(Ellipse o){
-            if (this.p.equals(o.p) && this.q.equals(o.q) && this.n == o.n){
-                return true;
-            }
-            return false;
-        }
-    }
-
-        public boolean equals(Ellipse o){
-            if (this.p.equals(o.p) && this.q.equals(o.q) && this.n == o.n){
-                return true;
-            }
-            return false;
-        }
-    }
-    // ans 15:
-    public class F2 implements Parabula {
-        private double a, b, c;
-
-        public F2(double a, double b, double c) {
-            this.a = a;
-            this.b = b;
-            this.c = c;
-        }
-
-        @Override
-        public double f(double x) {
-            return a * x * x + b * x + c;
-        }
-
-        @Override
-        public Parabula add(Parabula p) {
-            double[] otherCoffs = p.get();
-            double newA = this.a + otherCoffs[0];
-            double newB = this.b + otherCoffs[1];
-            double newC = this.c + otherCoffs[2];
-            return new F2(newA, newB, newC);
-        }
-
-        @Override
-        public double[] get() {
-            return new double[] {a, b, c};
-        }
-
-        @Override
-        public double extream(Parabula p) throws Exception {
-            if (this.a == 0) {
-                throw new Exception("No extrema point (not a parabola).");
-            }
-            return -this.b / (2 * this.a);
-        }
-    }
     // ans 16.1:
-        static int numberOfRealRoots(Parabula p) {
-            double[] params = p.get();
-            double a = params[0];
-            double b = params[1];
-            double c = params[2];
-            double inRoot = b * b - 2 * a * c;
+    static int numberOfRealRoots(Parabula p) {
+        double[] params = p.get();
+        double a = params[0];
+        double b = params[1];
+        double c = params[2];
+        double inRoot = b * b - 2 * a * c;
 
-            if (inRoot > 0) {
-                return 2;
-            } else if (inRoot == 0) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    //ans 16:
-    public static void sort(ArrayList<Parabula> parabulas){
-        for (int i = 0; i < parabulas.size(); i++) {
-            for (int j = 0; j < parabulas.size(); j++) {
-                try {
-                    if(parabulas.get(i).extream(parabulas.get(i)) < parabulas.get(j).extream(parabulas.get(j))){
-                        Parabula temp = parabulas.get(i);
-                        parabulas.set(i,parabulas.get(j));
-                        parabulas.set(j,temp);
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        if (inRoot > 0) {
+            return 2;
+        } else if (inRoot == 0) {
+            return 1;
+        } else {
+            return 0;
         }
     }
-    // ans 17.1:
-    public class AreaFilter implements ShapeFilter {
-        GeoShape shape;
 
-        public AreaFilter(GeoShape shape) {
-          this.shape = shape;
-        }
+    // ans 16.2:
+    static void sort(ArrayList<Parabula> a) {
 
-        @Override
-        public boolean filter(GeoShape s) {
-          return s.area() > shape.area();
-        }
-    }
-    // ans 17.2
-    public class PointsFilter implements ShapeFilter {
-      Point2D[] filterPoints;
-
-      public PointsFilter(Point2D[] points) {
-        this.filterPoints = points;
-      }
-
-      @Override
-      public boolean filter(GeoShape s) {
-        for (int i = 0; i < filterPoints.length; i++)
-          if (!s.contains(filterPoints[i])) {
-            return false;
-          }
-        return true;
-      }
     }
 
 
@@ -545,42 +391,19 @@ public class Ex3 {
         }
         return validCodes.toArray(new String[0]);
     }
-}
-// ans 18
-public class Pizza implements GeoShape {
-    double startAngle;
-    double endAngle;
-    Circle2D circle;
 
-    public Pizza(Circle2D circle, double startAngle,double endAngle){
-        this.circle = circle;
-        this.startAngle = startAngle;
-        this.endAngle = endAngle;
-    }
-    @Override
-    public boolean contains(Point2D ot) {
-        double angle = Math.atan2(ot.y() - circle.getCenter().y(),ot.x() - circle.getCenter().x());
-        return startAngle < angle && endAngle > angle;
-    }
-    @Override
-    public double area() {
-        return circle.area() * (endAngle-startAngle)/360;
-    }
-    @Override
-    public double perimeter() {
-        return 2 * circle.getRad() + circle.perimeter() * (endAngle-startAngle)/360;
-    }
-    @Override
-    public void move(Point2D vec) {
-         throw new UnsupportedOperationException();
-    }
-    @Override
-    public GeoShape copy() {
-        throw new UnsupportedOperationException();
-    }
-    @Override
-    public Point2D innerPoint() {
-        return null;
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 

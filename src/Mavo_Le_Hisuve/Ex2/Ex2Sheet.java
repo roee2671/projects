@@ -1,7 +1,7 @@
 package Mavo_Le_Hisuve.Ex2;
 
 import Mavo_Le_Hisuve.Ex2.Compute.*;
-import Mavo_Le_Hisuve.assignments.Ex2.Compute.*;
+import Mavo_Le_Hisuve.Ex2.Compute.*;
 
 import java.io.FileWriter;
 import java.io.IOException;

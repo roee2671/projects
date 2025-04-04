@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import Mavo_Le_Hisuve.Ex3.pdfUtils.*;
-import Mavo_Le_Hisuve.assignments.Ex3.pdfUtils.*;
+import Mavo_Le_Hisuve.Ex3.pdfUtils.*;
 
 public class Ex3 {
     public static void main(String[] args) {

@@ -1,12 +1,10 @@
 package Architecture.Ex1;
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.*;
 
 public class Students {
     private int[] studentsArray;
 
-    private String[] FileToStrings(String fileName) throws IOException {
+    public int[] insertGrades(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String line;
 
@@ -16,19 +14,15 @@ public class Students {
         }
         br.close();
 
-        String[] studentsGrades = new String[count];
+        String[] grades = new String[count];
         br = new BufferedReader(new FileReader(fileName));
         int index = 0;
 
         while ((line = br.readLine()) != null) {
-            studentsGrades[index++] = line;
+            grades[index++] = line;
         }
         br.close();
-        return studentsGrades;
-    }
 
-    public int[] insertGrades(String fileName) throws IOException{
-        String[] grades = FileToStrings(fileName);
         studentsArray = new int[grades.length];
 
         for (int i = 0; i < grades.length; i++) {
@@ -39,7 +33,8 @@ public class Students {
             int grade3 = Integer.parseInt(parts[2]);
             int grade4 = Integer.parseInt(parts[3]);
             studentsArray[i] = (grade4 << 24) | (grade3 << 16) | (grade2 << 8) | grade1;
-    }
+        }
+
         return studentsArray;
     }
     public void displayHex() {
